@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planilha de Ritmos</title>
+</head>
+<body>
+    <h1>Planilha de Ritmos</h1>
+    
+    <label for="nome">Digite seu nome:</label>
+    <input type="text" id="nome" placeholder="Digite o nome">
+    
+    <br><br>
+    
+
+     <!-- Input para upload da planilha -->
+     <input type="file" id="upload" accept=".xlsx, .xls" />
+
+     <br><br>
+
+    <label for="ritmo">Escolha o Ritmo:</label>
+    <select id="ritmo">
+        <option value="leve">Leve</option>
+        <option value="moderado">Moderado</option>
+        <option value="ritmo">Ritmo</option>
+        <option value="ritmoforte">Ritmo Forte</option>
+        <option value="forte">Forte</option>
+        <option value="tiroforte">Tiro Forte</option>
+
+    </select>
+    
+    <br><br>
+    
+    <label for="distancia">Escolha a Distância:</label>
+    <select id="distancia">
+        <option value="100m">100m</option>
+        <option value="200m">200m</option>
+        <option value="300m">300m</option>
+        <option value="400m">400m</option>
+        <option value="500m">500m</option>
+        <option value="600m">600m</option>
+        <option value="678m">678m</option>
+        <option value="700m">700m</option>
+        <option value="800m">800m</option>
+        <option value="900m">900m</option>
+        <option value=" min/km">min/km</option>
+        <option value="km/h">km/h</option>
+    </select>
+    
+    <br><br>
+    
+    <button onclick="calcularPace()">Calcular Pace</button>
+    
+    <h2 id="resultado"></h2>
+    
+    <script src="https://docs.google.com/spreadsheets/d/1QTHuNVQEXjuFi4InT9yBj0yIXaKY-EJF/edit?usp=drive_link&ouid=103668500641401776984&rtpof=true&sd=true"></script>
+
+    <script>
+        let planilhaDados = [];
+
+        function carregarPlanilha() {
+            const url = 'https://docs.google.com/spreadsheets/d/1QTHuNVQEXjuFi4InT9yBj0yIXaKY-EJF/edit?usp=drive_link&ouid=103668500641401776984&rtpof=true&sd=true';
+            fetch (url)
+            then (response => response.arrayBuffer())  
+            then (data =>  {
+                const workbook = XLSX.read(data, {type: 'array'});
+                const firstSheetName = workbook.SheetNames [0];
+                const worksheet = workbook.Sheets[firstSheetName];
+
+                planilhaDados = XLSX.utils.sheet_to_json(worksheet);
+        
+                console.log ("O seu pace será de: Y.");
+            })
+            .catch(console.error( => console.error('Erro ao carregar a planilha:', error));
+            )
+        }
+    </script>
+
+  </body>
+</html>
