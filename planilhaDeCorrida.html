@@ -59,22 +59,35 @@
     <script>
         let planilhaDados = [];
 
-        function carregarPlanilha() {
-            const url = 'https://docs.google.com/spreadsheets/d/1QTHuNVQEXjuFi4InT9yBj0yIXaKY-EJF/edit?usp=drive_link&ouid=103668500641401776984&rtpof=true&sd=true';
-            fetch (url)
-            then (response => response.arrayBuffer())  
-            then (data =>  {
-                const workbook = XLSX.read(data, {type: 'array'});
-                const firstSheetName = workbook.SheetNames [0];
-                const worksheet = workbook.Sheets[firstSheetName];
+    // Função para ler o arquivo Excel do input de upload
+    document.getElementById('upload').addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
 
-                planilhaDados = XLSX.utils.sheet_to_json(worksheet);
+        reader.onload = function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, {type: 'array'});
+
+            //Seleciona a primeira aba da planilha
+            const firstSheetName = workbook.SheetNames[0];
+            const workSheet = workbook.Sheets[firstSheetName];
+
+            //Converte a planilha em um array de objetos
+            planilhaDados = XLSX.utils.sheet_to_json(workSheet);
+            console.log(planilhaDados);
+        };
+        reader.readAsArrayBuffer(file);
+    });
+
+    function calcularPace() {
+        const nome = document.getElementById('nome').value;
+        const ritmoSelecionado = document.getElementById ('ritmo').value;
+        const distancia = document.getElementById ('distancia').value;
+
+
+        //Aqui você faria a lógica de cálculo usando os dados da planilha
+    }
         
-                console.log ("O seu pace será de: Y.");
-            })
-            .catch(console.error( => console.error('Erro ao carregar a planilha:', error));
-            )
-        }
     </script>
 
   </body>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Pace - VamBora!</title>
+    <style>
+        /* Estilos básicos para o layout */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFA500; /* Laranja inspirado no logo */
+            color: #fff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .container {
+            background-color: #fff;
+            color: #333;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+        h1 {
+            color: #FFA500;
+        }
+        .input-group {
+            margin: 10px 0;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            margin-top: 5px;
+        }
+        button {
+            background-color: #FFA500;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+        }
+        button:hover {
+            background-color: #ff8c00;
+        }
+        .result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Pace</h1>
+        <div class="input-group">
+            <label for="name">Nome</label>
+            <input type="text" id="name" placeholder="Digite seu nome">
+        </div>
+        <div class="input-group">
+            <label for="distance">Distância</label>
+            <select id="distance">
+                <option value="100">100 m</option>
+                <option value="200">200 m</option>
+                <option value="300">300 m</option>
+                <option value="400">400 m</option>
+                <option value="500">500 m</option>
+                <option value="600">600 m</option>
+                <option value="678">678 m</option>
+                <option value="700">700 m</option>
+                <option value="800">800 m</option>
+                <option value="900">900 m</option>
+                <option value="min/km">min/km</option>
+                <option value="Km/h">Km/h</option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="ritmo">Ritmo</label>
+            <select id="ritmo">
+                <option value="Leve">Leve</option>
+                <option value="Moderado">Moderado</option>
+                <option value="Ritmo">Ritmo</option>
+                <option value="Ritmo Forte">Ritmo Forte</option>
+                <option value="Forte">Forte</option>
+                <option value="Tiro Forte">Tiro Forte</option>   
+            </select>
+        </div>
+        <div class="input-group">
+            <label for="time">Tempo total (hh:mm:ss)</label>
+            <input type="text" id="time" placeholder="Exemplo: 01:30:00">
+        </div>
+        <button onclick="calculatePace()">Calcular Pace</button>
+        <div class="result" id="result"></div>
+    </div>
+
+    <script>
+        async function calculatePace() {
+            const name = document.getElementById('name').value;
+            const distance = document.getElementById('distance').value;
+            const time = document.getElementById('time').value;
+
+            try {
+                // Enviar dados ao servidor para calcular o pace
+                const response = await fetch('/calculate-pace', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, distance, time })
+                });
+                
+                const data = await response.json();
+                if (data.pace) {
+                    document.getElementById('result').innerText = `Pace: ${data.pace} min/km`;
+                } else {
+                    document.getElementById('result').innerText = 'Erro ao calcular o pace.';
+                }
+            } catch (error) {
+                console.error('Erro:', error);
+                document.getElementById('result').innerText = 'Erro ao conectar ao servidor.';
+            }
+        }
+    </script>
+</body>
+</html>

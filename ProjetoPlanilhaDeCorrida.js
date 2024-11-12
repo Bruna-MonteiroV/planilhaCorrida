@@ -1,5 +1,6 @@
 let nome = null;
 let seuPace = null;
+let calcularPace = null;
 
 typeof nome;
 
@@ -33,3 +34,6 @@ function verificarNome() {
             nome.value = '';
         }
 
+function calcularPace () {
+    
+}
